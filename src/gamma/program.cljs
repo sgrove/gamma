@@ -71,7 +71,8 @@
    (let [{:keys [vertex-shader fragment-shader precision]} x
          vs (shader vertex-shader precision)
          fs (shader fragment-shader precision)]
-     {:tag             :program
+     {:id              (:id x)
+      :tag             :program
       :vertex-shader   vs
       :fragment-shader fs
       :inputs          (program-inputs vs fs)})))
