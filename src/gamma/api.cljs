@@ -82,9 +82,8 @@
 
 (defn arithmetic-type [a b]
   (let [t (into #{} (map :type [a b]))]
-    (if (= 1 (count t))
-      (#{:float :int :vec2 :vec3 :vec4 :ivec2 :ivec3 :ivec4}
-        (first t)))))
+    (#{:float :int :vec2 :vec3 :vec4 :ivec2 :ivec3 :ivec4}
+     (first t))))
 
 
 (defn + [a b]
@@ -110,8 +109,9 @@
         bt (:type b)]
     (if-let
       [t (cljs.core/or
-           ({[:float :float] :float
+          ({[:float :float] :float
             [:mat4 :vec4]   :vec4
+            [:vec3 :mat3]   :vec3
             [:mat3 :vec3]   :vec3
             [:mat2 :vec2]   :vec2
             [:mat4 :mat4]   :mat4
@@ -121,13 +121,14 @@
             [:vec3 :vec3]   :vec3
             [:vec2 :vec2]   :vec2}
             [at bt])
-           ({
-             #{:mat2 :float} :mat2
-             #{:mat3 :float} :mat3
-              #{:mat4 :float} :mat4
-              #{:vec2 :float} :vec2
-              #{:vec3 :float} :vec3
-              #{:vec4 :float} :vec4} #{at bt}))]
+          ({
+            #{:mat2 :float} :mat2
+            #{:mat3 :float} :mat3
+            ;;#{:vec3 :mat3}  :mat3
+            #{:mat4 :float} :mat4
+            #{:vec2 :float} :vec2
+            #{:vec3 :float} :vec3
+            #{:vec4 :float} :vec4} #{at bt}))]
       (assoc (ast/term :* a b) :type t)
       (throw (js/Error. (str "Arguments to * of incompatible type: " at "," bt))))))
 

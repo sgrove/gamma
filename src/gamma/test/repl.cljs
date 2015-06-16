@@ -4,5 +4,5 @@
 
 (enable-console-print!)
 
-(defonce conn
+#_(defonce conn
          (repl/connect "http://localhost:9000/repl"))
